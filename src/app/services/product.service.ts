@@ -4,14 +4,15 @@ import { Product } from '../common/product';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs';
 import { ProductCategory } from '../common/product-category';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  private baseUrl = 'http://localhost:8080/api/products';
-  private categoryUrl = 'http://localhost:8080/api/product-category';
+  private baseUrl = environment.luv2shopApiUrl + '/products';
+  private categoryUrl = environment.luv2shopApiUrl + '/product-category';
 
   constructor(private httpCliente: HttpClient) { }
 
@@ -36,6 +37,8 @@ export class ProductService {
 
   searchProductsPaginated(thePage: number, thePageSize: number, theKeyword: string): Observable<GetResponseProducts> {
     const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}&page=${thePage}&size=${thePageSize}`;
+
+    console.log(`Getting products from - ${searchUrl}`);
 
     return this.httpCliente.get<GetResponseProducts>(searchUrl);
   }
